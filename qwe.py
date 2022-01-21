@@ -4,7 +4,6 @@ from pygame.locals import *
 import sys
 import random
 
-
 pygame.init()
 size = width, height = 600, 800
 screen = pygame.display.set_mode(size)
@@ -72,6 +71,7 @@ class Dudu:
         self.jump = 0
         self.gravity = 0
         self.move_moment = 0
+        self.best = 0
 
     def updatePlayer(self):
         if not self.jump:
@@ -171,8 +171,8 @@ class Dudu:
             if pygame.Rect(spring[0], spring[1], self.spring.get_width(), self.spring.get_height()).colliderect(
                     pygame.Rect(self.gamer_x, self.gamer_y, self.playerRight.get_width(),
                                 self.playerRight.get_height())):
-                self.jump = 50
-                self.cam -= 50
+                self.jump = 20
+                self.cam -= 20
 
     def generatePlatforms(self):
         on = 1000
@@ -181,7 +181,7 @@ class Dudu:
             platform = random.randint(0, 1000)
             if platform < 800:
                 platform = 0
-            elif 900 > platform >= 800 :
+            elif 900 > platform >= 800:
                 platform = 1
             else:
                 platform = 2
@@ -189,9 +189,9 @@ class Dudu:
             on -= 50
 
     def drawGrid(self):
-        for x in range(80):
-            pygame.draw.line(self.screen, (222, 222, 222), (x * 12, 0), (x * 12, 800))
-            pygame.draw.line(self.screen, (222, 222, 222), (0, x * 12), (800, x * 12))
+        for x in range(1000):
+            pygame.draw.line(self.screen, (220, 220, 220), (x * 12, 0), (x * 12, 800))
+            pygame.draw.line(self.screen, (220, 220, 220), (0, x * 12), (800, x * 12))
 
     def run(self):
         clock = pygame.time.Clock()
@@ -202,19 +202,22 @@ class Dudu:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     sys.exit()
-            if self.gamer_y - self.cam > 700:
+            if self.gamer_y - self.cam > 750:
+                if self.score > self.best:
+                    self.best = self.score
                 self.cam = 0
                 self.score = 0
                 self.springs = []
                 self.platforms = [[400, 500, 0, 0]]
                 self.generatePlatforms()
-                self.gamer_x = 400
+                self.gamer_x = 200
                 self.gamer_y = 400
             self.drawGrid()
             self.drawPlatforms()
             self.updatePlayer()
             self.update()
-            self.screen.blit(self.font.render(str(self.score), -1, (0, 0, 0)), (25, 25))
+            self.screen.blit(self.font.render(str(self.score), 1, (0, 0, 0)), (25, 25))
+            self.screen.blit(self.font.render(str(self.best), 1, (pygame.Color('red'))), (25, 50))
             pygame.display.flip()
 
 
