@@ -216,8 +216,12 @@ class Dudu:
             self.drawPlatforms()
             self.updatePlayer()
             self.update()
-            self.screen.blit(self.font.render(str(self.score), 1, (0, 0, 0)), (25, 25))
-            self.screen.blit(self.font.render(str(self.best), 1, (pygame.Color('red'))), (25, 50))
+
+            self.screen.blit(self.font.render('Текущий счет', True, (pygame.Color('black'))), (10, 25))
+            self.screen.blit(self.font.render(str(self.score), True, (pygame.Color('black'))), (150, 25))
+
+            self.screen.blit(self.font.render('Лучший счет:', True, (pygame.Color('red'))), (10, 50))
+            self.screen.blit(self.font.render(str(self.best), True, (pygame.Color('red'))), (150, 50))
             pygame.display.flip()
 
 
